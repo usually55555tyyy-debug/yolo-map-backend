@@ -3,7 +3,6 @@ import os
 import numpy as np
 import cv2
 import onnxruntime as ort
-from ultralytics import YOLO
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -31,11 +30,8 @@ output_names = None
 def load_model():
     global session, input_name, output_names
 
-    # Auto-generate the ONNX model if missing on Render
     if not os.path.exists(MODEL_PATH):
-        print(f"Model file {MODEL_PATH} not found. Exporting from PyTorch model...")
-        pt_model = YOLO("yolov8n-seg.pt")
-        pt_model.export(format="onnx")
+        raise FileNotFoundError(f"Model file {MODEL_PATH} not found in repository! Ensure yolov8n-seg.onnx is committed.")
 
     session = ort.InferenceSession(MODEL_PATH, providers=['CPUExecutionProvider'])
     input_name = session.get_inputs()[0].name

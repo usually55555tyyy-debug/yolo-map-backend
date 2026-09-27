@@ -3,7 +3,4 @@ uvicorn
 numpy
 opencv-python-headless
 onnxruntime
-ultralytics
-torch
-torchvision
 python-multipart
